@@ -17,5 +17,7 @@ router.enable('trust proxy')
 router.get('/', authenticate, params, proxy)
 router.get('/favicon.ico', (req, res) => res.status(204).end())
 
+app.use("/api/", router);
+
 // Export the app wrapped in serverless
 module.exports.handler = serverless(app);
