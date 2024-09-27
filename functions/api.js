@@ -8,13 +8,14 @@ const params = require('../src/params')
 const proxy = require('../src/proxy')
 
 const app = express()
+const router = express.Router()
 
 // HTTP request logging
 app.use(morgan('combined'))
 
-app.enable('trust proxy')
-app.get('/', authenticate, params, proxy)
-app.get('/favicon.ico', (req, res) => res.status(204).end())
+router.enable('trust proxy')
+router.get('/', authenticate, params, proxy)
+router.get('/favicon.ico', (req, res) => res.status(204).end())
 
 // Export the app wrapped in serverless
 module.exports.handler = serverless(app);
