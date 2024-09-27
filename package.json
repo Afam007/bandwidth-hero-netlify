@@ -9,7 +9,7 @@
     "url": "https://github.com/username/repo"
   },
   "scripts": {
-    "start": "ntl dev"
+    "start": "node functions/api.js"
   },
   "dependencies": {
     "serverless-http": "^3.2.0",
