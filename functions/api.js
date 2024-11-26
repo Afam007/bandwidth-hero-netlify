@@ -2,9 +2,9 @@
 'use strict'
 const express = require('express')
 const morgan = require('morgan')
-const authenticate = require('./src/authenticate')
-const params = require('./src/params')
-const proxy = require('./src/proxy')
+const authenticate = require('../src/authenticate')
+const params = require('../src/params')
+const proxy = require('../src/proxy')
 
 const app = express()
 const PORT = process.env.PORT || 443
