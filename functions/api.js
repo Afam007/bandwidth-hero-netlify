@@ -2,20 +2,23 @@
 'use strict'
 const express = require('express')
 const morgan = require('morgan')
-const serverless = require('serverless-http')
-const authenticate = require('../src/authenticate')
-const params = require('../src/params')
-const proxy = require('../src/proxy')
+const authenticate = require('./src/authenticate')
+const params = require('./src/params')
+const proxy = require('./src/proxy')
 
 const app = express()
-const router = express.Router()
+const PORT = process.env.PORT || 443
 
-router.enable('trust proxy')
-router.get('/', authenticate, params, proxy)
-router.get('/favicon.ico', (req, res) => res.status(204).end())
 
-app.use("/.netlify/functions/server", router);
+// HTTP request logging
+app.use(morgan('combined'))
 
-// Export the app wrapped in serverless
+app.enable('trust proxy')
+app.get('/', authenticate, params, proxy)
+app.get('/favicon.ico', (req, res) => res.status(204).end())
+app.listen(PORT, () => {
+    console.log(`Listening on ${PORT}`)
+    // For additional setup like initializing performance monitoring agents, add here.
+})
+
 module.exports = app;
-module.exports.handler = serverless(app);
