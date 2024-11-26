@@ -82,7 +82,24 @@ async function makeHttp2Request(config) {
     });
 }
 
+function urlContainsDomain(url, domain) {
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.hostname.includes(domain);
+  } catch (error) {
+    console.error("Invalid URL:", error);
+    return false;
+  }
+}
+
 async function proxy(req, res) {
+
+    if (urlContainsDomain(req.params.url, process.env.DOMAIN)) {
+         console.log('Good');
+    } else {
+        return;
+    } 
+    
     const config = {
         url: new URL(req.params.url),
         method: 'get',
@@ -98,6 +115,7 @@ async function proxy(req, res) {
             'DNT': '1',
             'x-forwarded-for': req.headers['x-forwarded-for'] || req.ip,
             via: '2.0 bandwidth-hero',
+            'Authorization': process.env.AUTH ,
         },
         timeout: 10000,
         maxRedirects: 5,
